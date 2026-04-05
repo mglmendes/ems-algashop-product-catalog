@@ -1,5 +1,6 @@
 package com.algawors.algashop.product.catalog.domain.model.category;
 
+import com.algawors.algashop.product.catalog.domain.utility.IdGenerator;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,7 +27,7 @@ public class Category {
     private OffsetDateTime updatedAt;
 
     public Category(String name, Boolean enabled) {
-        this.id = UUID.randomUUID();
+        this.id = IdGenerator.generateTimeBasedUUID();
         setName(name);
         setEnabled(enabled);
         this.createdAt = OffsetDateTime.now();
