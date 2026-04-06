@@ -6,13 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Service
-public class ProductQueryService {
+public interface ProductQueryService {
 
-   public ProductDetailOutput findById(UUID productId){
-      return  null;
-   }
-   public PageModel<ProductDetailOutput> filter(Integer size, Integer number) {
-      return  null;
-   }
+   PageModel<ProductDetailOutput> filter(Integer size, Integer number);
+   ProductDetailOutput findById(UUID productId);
 }

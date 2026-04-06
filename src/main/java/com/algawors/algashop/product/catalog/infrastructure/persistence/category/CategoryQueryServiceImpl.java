@@ -2,6 +2,7 @@ package com.algawors.algashop.product.catalog.infrastructure.persistence.categor
 
 import com.algawors.algashop.product.catalog.application.category.output.CategoryDetailOutput;
 import com.algawors.algashop.product.catalog.application.category.service.CategoryQueryService;
+import com.algawors.algashop.product.catalog.application.exception.ResourceNotFoundException;
 import com.algawors.algashop.product.catalog.application.utility.Mapper;
 import com.algawors.algashop.product.catalog.domain.model.category.Category;
 import com.algawors.algashop.product.catalog.domain.model.category.CategoryRepository;
@@ -26,7 +27,7 @@ public class CategoryQueryServiceImpl implements CategoryQueryService {
     @Override
     public CategoryDetailOutput findById(UUID categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(
-                () -> new IllegalArgumentException()
+                ResourceNotFoundException::new
         );
         return mapper.convert(category, CategoryDetailOutput.class);
     }

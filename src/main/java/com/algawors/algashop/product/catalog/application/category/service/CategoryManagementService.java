@@ -19,7 +19,8 @@ public class CategoryManagementService {
 
     public UUID create(@Valid CategoryInput input) {
         Category category = new Category(input.getName(), input.getEnabled());
-        return categoryRepository.save(category).getId();
+        categoryRepository.save(category);
+        return category.getId();
     }
 
     public void update(UUID categoryId, CategoryInput input) {
