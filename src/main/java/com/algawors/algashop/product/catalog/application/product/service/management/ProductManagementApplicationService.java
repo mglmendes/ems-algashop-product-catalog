@@ -30,6 +30,7 @@ public class ProductManagementApplicationService {
         Product product = findProduct(productId);
         Category category = findCategory(productInput.getCategoryId());
         updateProduct(product, productInput);
+        product.setCategory(category);
         productRepository.save(product);
     }
 
@@ -54,6 +55,7 @@ public class ProductManagementApplicationService {
                 .regularPrice(productInput.getRegularPrice())
                 .salePrice(productInput.getSalePrice())
                 .enabled(productInput.getEnabled())
+                .category(category)
                 .build();
     }
 

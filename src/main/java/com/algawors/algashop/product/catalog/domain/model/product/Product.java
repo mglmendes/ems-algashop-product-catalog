@@ -1,11 +1,15 @@
 package com.algawors.algashop.product.catalog.domain.model.product;
 
 import com.algawors.algashop.product.catalog.domain.model.DomainException;
+import com.algawors.algashop.product.catalog.domain.model.category.Category;
 import com.algawors.algashop.product.catalog.domain.utility.IdGenerator;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -52,9 +56,13 @@ public class Product {
     @LastModifiedBy
     private UUID modifiedByUserId;
 
+    @DocumentReference(lazy = true)
+    @Field(name = "categoryId")
+    private Category category;
+
     @Builder
     public Product(String name, String brand, String description, Boolean enabled,
-                   BigDecimal regularPrice, BigDecimal salePrice) {
+                   BigDecimal regularPrice, BigDecimal salePrice, Category category) {
         setId(IdGenerator.generateTimeBasedUUID());
         setName(name);
         setBrand(brand);
@@ -63,6 +71,7 @@ public class Product {
         setRegularPrice(regularPrice);
         setSalePrice(salePrice);
         setQuantityInStock(0);
+        setCategory(category);
     }
 
     public void setName(String name) {
@@ -77,6 +86,11 @@ public class Product {
             throw  new IllegalArgumentException("brand cannot be empty");
         }
         this.brand = brand;
+    }
+
+    public void setCategory(Category category) {
+        Objects.requireNonNull(category, "category cannot be null");
+        this.category = category;
     }
 
     public void setRegularPrice(BigDecimal regularPrice) {
