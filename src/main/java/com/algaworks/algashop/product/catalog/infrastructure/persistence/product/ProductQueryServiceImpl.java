@@ -79,6 +79,17 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                 query.addCriteria(Criteria.where("addedAt").lte(filter.getAddedAtTo()));
             }
         }
+
+        if (filter.getPriceFrom() != null && filter.getPriceTo() != null) {
+            query.addCriteria(Criteria.where("salePrice").gte(filter.getPriceFrom()).lte(filter.getPriceTo()));
+        } else {
+            if (filter.getPriceFrom() != null) {
+                query.addCriteria(Criteria.where("salePrice").gte(filter.getPriceFrom()));
+            } else if (filter.getPriceTo() != null) {
+                query.addCriteria(Criteria.where("salePrice").lte(filter.getPriceTo()));
+            }
+        }
+
         return query;
     }
 
