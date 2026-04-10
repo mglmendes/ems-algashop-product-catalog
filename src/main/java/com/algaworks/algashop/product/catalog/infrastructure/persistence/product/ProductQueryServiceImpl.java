@@ -10,6 +10,7 @@ import com.algaworks.algashop.product.catalog.domain.model.product.ProductNotFou
 import com.algaworks.algashop.product.catalog.domain.model.product.ProductRepository;
 import com.algaworks.algashop.product.catalog.presentation.model.PageModel;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -30,6 +31,8 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     private final ProductRepository productRepository;
     private final Mapper mapper;
     private final MongoOperations mongoOperations;
+
+    private static final String findWordRegex = "(?i)%s";
 
     @Override
     public PageModel<ProductSummaryOutput> filter(ProductFilter productFilter) {
@@ -114,6 +117,17 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
         if (filter.getCategoriesId() != null && filter.getCategoriesId().length > 0) {
             query.addCriteria(Criteria.where("categoryId").in((Object[])filter.getCategoriesId()));
+        }
+
+        if (StringUtils.isNotBlank(filter.getTerm())) {
+            String regexExpression = String.format(findWordRegex, filter.getTerm());
+            query.addCriteria(
+                    new Criteria().orOperator(
+                            Criteria.where("name").regex(regexExpression),
+                            Criteria.where("description").regex(regexExpression),
+                            Criteria.where("brand").regex(regexExpression)
+                    )
+            );
         }
 
         return query;

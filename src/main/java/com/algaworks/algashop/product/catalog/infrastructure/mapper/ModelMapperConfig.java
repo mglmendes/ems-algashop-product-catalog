@@ -2,6 +2,7 @@ package com.algaworks.algashop.product.catalog.infrastructure.mapper;
 
 
 import com.algaworks.algashop.product.catalog.application.product.output.ProductDetailOutput;
+import com.algaworks.algashop.product.catalog.application.product.output.ProductSummaryOutput;
 import com.algaworks.algashop.product.catalog.application.utility.Mapper;
 import com.algaworks.algashop.product.catalog.domain.model.product.Product;
 import com.algaworks.algashop.product.catalog.infrastructure.utility.Slugfier;
@@ -41,9 +42,17 @@ public class ModelMapperConfig {
         modelMapper.createTypeMap(Product.class, ProductDetailOutput.class).addMappings(
                 mapping -> {
                     mapping.using(fromStringToSlugConverter).map(Product::getName, ProductDetailOutput::setSlug);
-                    mapping.using(fromStringToShortStringConverter).map(Product::getDescription, ProductDetailOutput::setDescription);
                 }
         );
+
+        modelMapper.createTypeMap(Product.class, ProductSummaryOutput.class)
+                .addMappings(mapping -> {
+                            mapping.using(fromStringToSlugConverter)
+                                    .map(Product::getName, ProductSummaryOutput::setSlug);
+                            mapping.using(fromStringToShortStringConverter)
+                                    .map(Product::getDescription, ProductSummaryOutput::setShortDescription);
+                        }
+                );
     }
 
 }
