@@ -28,8 +28,7 @@ import java.util.UUID;
         partialFilter = "{'enabled': true}")
 @CompoundIndex(name = "pidx_product_by_category_enabledTrue_addedAt",
         def = "{'categoryId': 1, 'addedAt': -1}",
-        partialFilter = "{'enabled': true}"
-)
+        partialFilter = "{'enabled': true}")
 public class Product {
 
     @Id
