@@ -11,6 +11,7 @@ import com.algaworks.algashop.product.catalog.domain.model.product.ProductReposi
 import com.algaworks.algashop.product.catalog.presentation.model.PageModel;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.Document;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -55,7 +56,13 @@ public class ProductQueryServiceImpl implements ProductQueryService {
 
         List<AggregationOperation> operations = new ArrayList<>();
 
-        textCriteria.ifPresent(c -> operations.add(Aggregation.match(c)));
+        textCriteria.ifPresent(c -> {
+            operations.add(Aggregation.match(c));
+            AggregationOperation addTextScoreField = context -> {
+                return new Document("$addFields", new Document("score", new Document("$meta", "textScore")));
+            };
+            operations.add(addTextScoreField);
+        });
         criteria.ifPresent(c -> operations.add(Aggregation.match(c)));
 
         PageRequest pageRequest = PageRequest.of(productFilter.getPage(), productFilter.getSize());
@@ -98,7 +105,11 @@ public class ProductQueryServiceImpl implements ProductQueryService {
                 .and("score").as("score")
                 .and("category._id").as("category._id")
                 .and("category.name").as("category.name")
-                ;
+                .andExpression("salePrice < regularPrice").as("hasDiscount")
+                .andExpression("quantityInStock > 0").as("inStock")
+                .and(StringOperators.Substr.valueOf("description")
+                        .substring(0, 50)).as("shortDescription");
+
     }
 
     private Sort sortWith(ProductFilter productFilter) {
