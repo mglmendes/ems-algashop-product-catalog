@@ -69,9 +69,9 @@ public class Product {
     @LastModifiedBy
     private UUID modifiedByUserId;
 
-    @DocumentReference(lazy = true)
-    @Field(name = "categoryId")
-    private Category category;
+    private UUID categoryId;
+
+    private ProductCategory category;
 
     private Integer discountPercentageRounded;
 
@@ -108,7 +108,8 @@ public class Product {
 
     public void setCategory(Category category) {
         Objects.requireNonNull(category, "category cannot be null");
-        this.category = category;
+        this.categoryId = category.getId();
+        this.category = ProductCategory.of(category);
     }
 
     public void setRegularPrice(BigDecimal regularPrice) {
