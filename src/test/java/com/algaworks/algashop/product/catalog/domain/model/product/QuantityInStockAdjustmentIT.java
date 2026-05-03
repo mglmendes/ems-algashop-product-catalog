@@ -73,4 +73,26 @@ public class QuantityInStockAdjustmentIT {
         Product product = productRepository.findById(existingProduct).orElseThrow();
         Assertions.assertThat(product.getQuantityInStock()).isEqualTo(50);
     }
+
+    @Test
+    public void shouldCalculateDecreaseResult() {
+        Product product = productRepository.findById(existingProduct).orElseThrow();
+
+        var result = quantityInStockAdjustment.decrease(product.getId(), 40);
+
+        Assertions.assertThat(result).isNotNull();
+        Assertions.assertThat(result.previousQuantity()).isEqualTo(50);
+        Assertions.assertThat(result.newQuantity()).isEqualTo(10);
+    }
+
+    @Test
+    public void shouldCalculateIncreaseResult() {
+        Product product = productRepository.findById(existingProduct).orElseThrow();
+
+        var result = quantityInStockAdjustment.increase(product.getId(), 40);
+
+        Assertions.assertThat(result).isNotNull();
+        Assertions.assertThat(result.previousQuantity()).isEqualTo(50);
+        Assertions.assertThat(result.newQuantity()).isEqualTo(90);
+    }
 }
