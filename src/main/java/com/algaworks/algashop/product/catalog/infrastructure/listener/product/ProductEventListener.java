@@ -29,16 +29,26 @@ public class ProductEventListener {
 
     @EventListener(ProductAddedEvent.class)
     public void handle(ProductAddedEvent event) {
-        log.info("ProductAddedEvent " + event);
+        log.info("Product {} added to sale.", event.getProductId());
     }
 
     @EventListener(ProductDelistedEvent.class)
     public void handle(ProductDelistedEvent  event) {
-        log.info("ProductDelistedEvent  " + event);
+        log.info("Product {} delisted from sale.", event.getProductId());
     }
 
     @EventListener(ProductListedEvent.class)
     public void handle(ProductListedEvent event) {
-        log.info("ProductListedEvent " + event);
+        log.info("Product {} listed from sale.", event.getProductId());
+    }
+
+    @EventListener(ProductRestockedEvent.class)
+    public void handle(ProductRestockedEvent event) {
+        log.info("Product {} restocked from sale.", event.getProductId());
+    }
+
+    @EventListener(ProductSoldOutEvent.class)
+    public void handle(ProductSoldOutEvent event) {
+        log.info("Product {} sold out from sale.", event.getProductId());
     }
 }

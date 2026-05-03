@@ -9,6 +9,7 @@ import com.algaworks.algashop.product.catalog.application.product.service.manage
 import com.algaworks.algashop.product.catalog.domain.model.category.CategoryNotFoundException;
 import com.algaworks.algashop.product.catalog.presentation.exceptionhandler.UnprocessableContentException;
 import com.algaworks.algashop.product.catalog.presentation.model.PageModel;
+import com.algaworks.algashop.product.catalog.presentation.model.ProductQuantityModel;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -65,5 +66,17 @@ public class ProductController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID productId) {
         productManagementApplicationService.disable(productId);
+    }
+
+    @PostMapping("/{productId}/restock")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void restock(@PathVariable UUID productId, @Valid @RequestBody ProductQuantityModel quantity) {
+        productManagementApplicationService.restock(productId, quantity.getQuantity());
+    }
+
+    @PostMapping("/{productId}/withdraw")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void withdraw(@PathVariable UUID productId, @Valid @RequestBody ProductQuantityModel quantity) {
+        productManagementApplicationService.withdraw(productId, quantity.getQuantity());
     }
 }
