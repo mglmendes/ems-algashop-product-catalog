@@ -33,6 +33,7 @@ publishing {
 
 ext {
 	set('springCloudVersion', "2025.1.0")
+	set('springCloudAwsVersion', "4.0.0")
 	set('snippetsDir', file("build/generated-snippets"))
 }
 
@@ -51,6 +52,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:${springCloudAwsVersion}")
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
 	implementation 'org.modelmapper:modelmapper:3.2.6'
 	implementation 'commons-io:commons-io:2.21.0'
 	implementation 'com.fasterxml.uuid:java-uuid-generator:5.1.1'
