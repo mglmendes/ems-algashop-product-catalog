@@ -35,7 +35,9 @@ public class UploadRequestApplicationService {
                 .contentLength(input.getContentLength())
                 .contentType(mediaType)
                 .fileName(UUID.randomUUID()+ "." + extension)
-                .expiresIn(Duration.ofMinutes(5)).build();
+                .expiresIn(Duration.ofMinutes(5))
+                .allowPublicRead(true)
+                .build();
 
         URL presigenedUrl = storageProvider.requestUploadUrl(fileReference);
         OffsetDateTime expiresAt = OffsetDateTime.now().plus(fileReference.getExpiresIn());

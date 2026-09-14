@@ -14,12 +14,15 @@ public class FileReference {
     private MediaType contentType;
     private Long contentLength;
     private Duration expiresIn;
+    private Boolean allowPublicRead;
 
     @Builder
-    public FileReference(String fileName, MediaType contentType, Long contentLength, Duration expiresIn) {
+    public FileReference(String fileName, MediaType contentType, Long contentLength,
+                         Duration expiresIn, Boolean allowPublicRead) {
         Objects.requireNonNull(fileName, "fileName is required");
         Objects.requireNonNull(contentType, "contentType is required");
         Objects.requireNonNull(expiresIn, "contentLength is required");
+        Objects.requireNonNull(allowPublicRead, "allowPublicRead is required");
         if (contentLength <= 0 ) {
             throw new IllegalArgumentException();
         }
@@ -27,6 +30,6 @@ public class FileReference {
         this.contentType = contentType;
         this.contentLength = contentLength;
         this.expiresIn = expiresIn;
-
+        this.allowPublicRead = allowPublicRead;
     }
 }
