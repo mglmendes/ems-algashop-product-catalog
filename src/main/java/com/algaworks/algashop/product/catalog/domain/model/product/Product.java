@@ -268,7 +268,6 @@ public class Product extends AbstractAggregateRoot<Product> {
     }
 
     private void setMainImage(Image mainImage) {
-        Objects.requireNonNull(mainImage, "main image cannot be null");
         this.mainImage = mainImage;
     }
 
