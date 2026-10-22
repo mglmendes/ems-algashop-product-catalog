@@ -52,6 +52,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
 	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:${springCloudAwsVersion}")
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
 	implementation 'org.modelmapper:modelmapper:3.2.6'
@@ -68,6 +69,7 @@ dependencies {
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	testImplementation 'org.springframework.boot:spring-boot-starter-cache-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-redis-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server-test'
 	constraints {
 		testImplementation('io.rest-assured:rest-assured:6.0.0') {
 			version {
