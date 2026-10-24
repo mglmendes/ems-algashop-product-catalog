@@ -25,7 +25,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081
+          issuer-uri: http://algashop-authorization-server:8081
           #jwk-set-uri: http://localhost:8081/oauth2/jwks
 
 logging:
