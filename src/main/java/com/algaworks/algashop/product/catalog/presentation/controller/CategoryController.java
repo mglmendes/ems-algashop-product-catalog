@@ -6,6 +6,8 @@ import com.algaworks.algashop.product.catalog.application.category.output.Catego
 import com.algaworks.algashop.product.catalog.application.category.service.management.CategoryManagementService;
 import com.algaworks.algashop.product.catalog.application.category.service.query.CategoryFilter;
 import com.algaworks.algashop.product.catalog.application.category.service.query.CategoryQueryService;
+import com.algaworks.algashop.product.catalog.infrastructure.security.SecurityAnnotations.CanReadCategory;
+import com.algaworks.algashop.product.catalog.infrastructure.security.SecurityAnnotations.CanWriteCategory;
 import com.algaworks.algashop.product.catalog.presentation.model.PageModel;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class CategoryController {
     private final CategoryQueryService categoryQueryService;
     private final CategoryManagementService categoryManagementService;
 
+    @CanReadCategory
     @GetMapping
     public ResponseEntity<PageModel<CategoryDetailOutput>> filter(CategoryFilter categoryFilter, WebRequest request) {
 
@@ -48,6 +51,7 @@ public class CategoryController {
                 .body(results);
     }
 
+    @CanWriteCategory
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDetailOutput create(@RequestBody @Valid CategoryInput input) {
@@ -55,6 +59,7 @@ public class CategoryController {
         return categoryQueryService.findById(categoryId);
     }
 
+    @CanReadCategory
     @GetMapping("/{categoryId}")
     public ResponseEntity<CategoryDetailOutput> findById(@PathVariable UUID categoryId) {
         CategoryDetailOutput category = categoryQueryService.findById(categoryId);
@@ -65,6 +70,7 @@ public class CategoryController {
                 .body(category);
     }
 
+    @CanWriteCategory
     @PutMapping("/{categoryId}")
     public CategoryDetailOutput update(
             @PathVariable UUID categoryId,
@@ -73,6 +79,7 @@ public class CategoryController {
         return categoryQueryService.findById(categoryId);
     }
 
+    @CanWriteCategory
     @DeleteMapping("/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void disable(@PathVariable UUID categoryId) {

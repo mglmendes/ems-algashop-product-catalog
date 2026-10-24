@@ -10,6 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.*;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,6 +63,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         problemDetail.setTitle("Unprocessable Content");
         problemDetail.setDetail(ex.getMessage());
         problemDetail.setType(URI.create("/errors/unprocessable-content"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ProblemDetail handleAuthorizationDeniedException(Exception ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN.value());
+        problemDetail.setTitle("Access Denied");
+        problemDetail.setDetail(ex.getMessage());
+        problemDetail.setType(URI.create("/errors/access-denied"));
         return problemDetail;
     }
 }
